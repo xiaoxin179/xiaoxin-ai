@@ -9,3 +9,32 @@ spring:
         options:
           model: deepseek-chat        # DeepSeek-V3 的模型名
           temperature: 0.7
+
+logging:
+  level:
+    # Spring AI —— 内部处理链（最全）
+    org.springframework.ai: DEBUG
+    # 逐层调用栈（按类追踪）
+    org.springframework.ai.chat: DEBUG
+    org.springframework.ai.chat.client: DEBUG
+    org.springframework.ai.chat.client.adaptive: DEBUG
+    org.springframework.ai.chat.client.logging: DEBUG
+    org.springframework.ai.chat.messages: DEBUG
+    org.springframework.ai.chat.prompt: DEBUG
+    org.springframework.ai.chat.prompt.impl: DEBUG
+    org.springframework.ai.chat.messages.Media: DEBUG
+    org.springframework.ai.chat.messages.UserMessage: DEBUG
+    org.springframework.ai.chat.messages.SystemMessage: DEBUG
+    org.springframework.ai.chat.messages.AssistantMessage: DEBUG
+    # JSON 序列化 / 反序列化
+    org.springframework.ai.support: DEBUG
+    org.springframework.ai.tool: DEBUG
+    # OpenAI API 底层实现
+    org.springframework.ai.openai: DEBUG
+    org.springframework.ai.openai.api: DEBUG
+    org.springframework.ai.openai.api.OpenAiApi: DEBUG
+    # HTTP 细节
+    org.springframework.web.client: DEBUG
+    org.springframework.http: DEBUG
+    # 请求/响应 body 完整打印（替换掉省略号）
+    org.springframework.http.converter.json.MappingJackson2HttpMessageConverter: TRACE
