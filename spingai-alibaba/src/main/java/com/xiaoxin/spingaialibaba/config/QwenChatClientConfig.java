@@ -3,14 +3,13 @@ package com.xiaoxin.spingaialibaba.config;
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatModel;
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatOptions;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-//存放不同的bean按场景拆开配置，各用各的：
+
 @Configuration
 public class QwenChatClientConfig {
 
-    @Bean("customerServiceChatClient")
+    @Bean(ChatClientEnum.CUSTOMER_SERVICE)
     public ChatClient customerServiceChatClient(DashScopeChatModel dashScopeChatModel) {
         return ChatClient.builder(dashScopeChatModel)
                 .defaultSystem("""
@@ -25,7 +24,7 @@ public class QwenChatClientConfig {
                 .build();
     }
 
-    @Bean("contentChatClient")
+    @Bean(ChatClientEnum.CONTENT)
     public ChatClient contentChatClient(DashScopeChatModel dashScopeChatModel) {
         return ChatClient.builder(dashScopeChatModel)
                 .defaultSystem("你是一个资深文案策划，擅长撰写吸引人的营销文案。")
@@ -33,10 +32,11 @@ public class QwenChatClientConfig {
                         .withModel("qwen-max")
                         .withTemperature(0.9)
                         .build())
+
                 .build();
     }
 
-    @Bean("analysisChatClient")
+    @Bean(ChatClientEnum.ANALYSIS)
     public ChatClient analysisChatClient(DashScopeChatModel dashScopeChatModel) {
         return ChatClient.builder(dashScopeChatModel)
                 .defaultSystem("你是一个数据分析师，擅长解读数据并给出业务洞察。")
