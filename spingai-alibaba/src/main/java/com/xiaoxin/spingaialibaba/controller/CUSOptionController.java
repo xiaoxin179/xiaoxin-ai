@@ -2,7 +2,6 @@ package com.xiaoxin.spingaialibaba.controller;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.prompt.ChatOptions;
-import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,7 +22,7 @@ public class CUSOptionController {
     public String creative(@RequestParam String message) {
         return chatClient.prompt()
                 .user(message)
-                .options(OpenAiChatOptions.builder()
+                .options(ChatOptions.builder()
                         .temperature(1.5)
                         .maxTokens(500)
                         .build())
@@ -36,7 +35,7 @@ public class CUSOptionController {
     public String precise(@RequestParam String message) {
         return chatClient.prompt()
                 .user(message)
-                .options(OpenAiChatOptions.builder()
+                .options(ChatOptions.builder()
                         .temperature(0.1)
                         .maxTokens(1000)
                         .build())

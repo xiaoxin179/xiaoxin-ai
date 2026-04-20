@@ -43,6 +43,13 @@
             <groupId>com.alibaba.cloud.ai</groupId>
             <artifactId>spring-ai-alibaba-starter-dashscope</artifactId>
             <version>1.1.2.0</version>
+            <exclusions>
+                <!-- 排除 OpenAI 自动配置模块，避免多个 ChatModel bean 冲突 -->
+                <exclusion>
+                    <groupId>org.springframework.ai</groupId>
+                    <artifactId>spring-ai-autoconfigure-model-openai</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- Lombok（简化 getter/setter/log） -->
         <dependency>

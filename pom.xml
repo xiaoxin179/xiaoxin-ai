@@ -34,19 +34,6 @@
         </dependencies>
     </dependencyManagement>
     <dependencies>
-        <!-- Web -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <!--
-            OpenAI Starter：支持 OpenAI 及所有兼容接口（DeepSeek、Moonshot 等）
-            引入后自动配置 ChatModel、EmbeddingModel 等 Bean
-        -->
-        <dependency>
-            <groupId>org.springframework.ai</groupId>
-            <artifactId>spring-ai-starter-model-openai</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
