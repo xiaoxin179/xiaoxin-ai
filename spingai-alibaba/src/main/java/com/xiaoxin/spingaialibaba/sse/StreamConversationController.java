@@ -41,7 +41,7 @@ public class StreamConversationController {
                 .stream()
                 .content()
                 // 超时控制：30 秒内没有新数据就触发 TimeoutException
-                .timeout(Duration.ofSeconds(30))
+                .timeout(Duration.ofSeconds(1))
                 // 超时时推送提示后结束流
                 .onErrorResume(TimeoutException.class,
                         e -> Flux.just("[响应超时，请重试]"))
