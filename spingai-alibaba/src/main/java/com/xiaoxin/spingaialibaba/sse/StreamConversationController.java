@@ -7,6 +7,9 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 
+import java.time.Duration;
+import java.util.concurrent.TimeoutException;
+
 @RestController
 @RequestMapping("/api/stream/conversation")
 public class StreamConversationController {
@@ -37,6 +40,16 @@ public class StreamConversationController {
                         .build())
                 .stream()
                 .content()
+                // 超时控制：30 秒内没有新数据就触发 TimeoutException
+                .timeout(Duration.ofSeconds(30))
+                // 超时时推送提示后结束流
+                .onErrorResume(TimeoutException.class,
+                        e -> Flux.just("[响应超时，请重试]"))
+                // 其他异常统一处理
+                .onErrorResume(e -> {
+                    System.out.println("流失出错："+e.getMessage());
+                    return Flux.just("[抱歉，生成过程中出现错误，请稍后重试]");
+                })
                 .doOnNext(chunk -> System.out.print(chunk))      // 每片到来时打印
                 .doOnComplete(() -> System.out.println("\n完成")); // 全部完成时
     }
