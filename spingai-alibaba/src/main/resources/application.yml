@@ -1,6 +1,12 @@
 spring:
   application:
     name: spingai-alibaba
+  data:
+    redis:
+      host: 192.168.193.213
+      port: 6379
+      # password: your_password   # 如果 Redis 设了密码就打开这行
+      database: 0
   ai:
     dashscope:
       api-key: ${DASHSCOPE_API_KEY}
