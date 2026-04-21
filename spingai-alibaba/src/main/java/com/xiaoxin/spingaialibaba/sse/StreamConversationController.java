@@ -36,6 +36,8 @@ public class StreamConversationController {
                         .conversationId(conversationId)
                         .build())
                 .stream()
-                .content();
+                .content()
+                .doOnNext(chunk -> System.out.print(chunk))      // 每片到来时打印
+                .doOnComplete(() -> System.out.println("\n完成")); // 全部完成时
     }
 }
