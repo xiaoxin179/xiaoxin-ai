@@ -1,0 +1,2 @@
+# 1.@spingai-alibaba/src/main/java/com/xiaoxin/spingaialibaba/memory/SessionController.java:19-22
+这个方法我不理解，我调用的是chatMemory中的clear他却是调用的RedisChatMemoryRepository中的deleteByConversationId方法
