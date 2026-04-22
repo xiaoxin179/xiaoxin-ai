@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>限流测试</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; }
+        h1 { color: #333; }
+        .controls { margin-bottom: 20px; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; margin: 5px; }
+        button:disabled { background: #ccc; cursor: not-allowed; }
+        .log { background: #f5f5f5; padding: 15px; border-radius: 5px; max-height: 400px; overflow-y: auto; }
+        .log div { padding: 5px 0; border-bottom: 1px solid #eee; }
+        .success { color: green; }
+        .error { color: red; }
+        .params { margin: 15px 0; }
+        .params input { padding: 8px; margin: 0 10px 0 5px; width: 200px; }
+    </style>
+</head>
+<body>
+    <h1>限流测试工具</h1>
+
+    <div class="params">
+        <label>消息: <input type="text" id="message" value="你好"></label>
+        <label>用户ID: <input type="text" id="userId" value="testUser"></label>
+        <label>请求次数: <input type="number" id="count" value="5" min="1" max="20"></label>
+    </div>
+
+    <div class="controls">
+        <button onclick="startTest()" id="startBtn">开始测试</button>
+        <button onclick="clearLog()">清空日志</button>
+    </div>
+
+    <div class="log" id="log"></div>
+
+    <script>
+        const logEl = document.getElementById('log');
+        const startBtn = document.getElementById('startBtn');
+
+        function addLog(text, isSuccess) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            div.className = isSuccess ? 'success' : (isSuccess === false ? 'error' : '');
+            logEl.prepend(div);
+        }
+
+        function clearLog() {
+            logEl.innerHTML = '';
+        }
+
+        async function sendRequest(message, userId, index) {
+            const url = `http://localhost:8081/api/rate-limit?message=${encodeURIComponent(message)}&userId=${encodeURIComponent(userId)}`;
+            const startTime = Date.now();
+
+            try {
+                const response = await fetch(url);
+                const elapsed = Date.now() - startTime;
+                const isSuccess = response.ok;
+
+                addLog(
+                    `第 ${index} 次 -> ${isSuccess ? '✅' : '❌'} 状态: ${response.status} | 耗时: ${elapsed}ms | ${response.statusText}`,
+                    isSuccess
+                );
+
+                return { success: isSuccess, status: response.status };
+            } catch (error) {
+                addLog(`第 ${index} 次 -> ❌ 网络错误: ${error.message}`, false);
+                return { success: false, error: error.message };
+            }
+        }
+
+        async function startTest() {
+            const message = document.getElementById('message').value || '你好';
+            const userId = document.getElementById('userId').value || 'testUser';
+            const count = parseInt(document.getElementById('count').value) || 5;
+
+            startBtn.disabled = true;
+            startBtn.textContent = '测试中...';
+            addLog(`=== 开始测试: 并发发送 ${count} 次请求 ===`, null);
+
+            const promises = [];
+            for (let i = 1; i <= count; i++) {
+                promises.push(sendRequest(message, userId, i));
+            }
+            await Promise.all(promises);
+
+            addLog('=== 测试完成 ===', null);
+            startBtn.disabled = false;
+            startBtn.textContent = '开始测试';
+        }
+    </script>
+</body>
+</html>
