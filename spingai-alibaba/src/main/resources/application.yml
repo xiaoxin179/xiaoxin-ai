@@ -3,8 +3,8 @@ spring:
     name: spingai-alibaba
   data:
     redis:
-      host: 192.168.193.213
-      port: 6379
+      host: ${REDIS_HOST:192.168.193.213}
+      port: ${REDIS_PORT:6379}
       # password: your_password   # 如果 Redis 设了密码就打开这行
       database: 0
   ai:
@@ -15,11 +15,16 @@ spring:
           model: qwen-max
           temperature: 0.7
           max-tokens: 2048
+    vectorstore:
+      pgvector:
+        initialize-schema: true          # 自动建向量表，第一次启动后可关掉
+        index-type: HNSW                 # HNSW 索引，查询速度快
+        distance-type: COSINE_DISTANCE   # 余弦相似度
+        dimensions: 1024                 # text-embedding-v3 的向量维度是 1024，别填错，填错了报错很难排查
   datasource:
-    url: jdbc:mysql://192.168.193.213:3306/xiaoxinai?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
-    username: root
-    password: Aa123456
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:postgresql://${DB_HOST:192.168.193.213}:5432/vectordb
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
     jpa:
       hibernate:
         ddl-auto: none        # 生产用 none，表结构手动建
