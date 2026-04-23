@@ -1,4 +1,8 @@
 spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.ai.model.chat.client.autoconfigure.ChatClientAutoConfiguration
+      - org.springframework.ai.model.openai.autoconfigure.OpenAiImageAutoConfiguration
   application:
     name: spingai-alibaba
   data:
@@ -15,6 +19,12 @@ spring:
           model: qwen-max
           temperature: 0.7
           max-tokens: 2048
+    openai:
+      api-key: ${DEEPSEEK_API_KEY}
+      base-url: https://api.deepseek.com
+      chat:
+        options:
+          model: deepseek-chat
     vectorstore:
       pgvector:
         initialize-schema: true          # 自动建向量表，第一次启动后可关掉

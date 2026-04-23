@@ -5,6 +5,7 @@ import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,7 +15,7 @@ public class AdvisorDemoController {
     private final ChatClient chatClient;
     private final ChatMemory chatMemory;
 
-    public AdvisorDemoController(ChatClient.Builder builder, ChatMemory wsc) {
+    public AdvisorDemoController( ChatClient.Builder builder, ChatMemory wsc) {
         this.chatMemory =wsc;
         this.chatClient = builder
                 .defaultSystem("你是一个 Java 技术助手")
