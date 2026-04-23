@@ -12,6 +12,17 @@ spring:
       # password: your_password   # 如果 Redis 设了密码就打开这行
       database: 0
   ai:
+    # 全局默认用哪个厂商，可选值：deepseek / qwen
+    # ModelRouterService 里没有明确指定时，fallback 到这里
+    default-provider: deepseek
+    providers:
+      deepseek:
+        # 调用时动态传给 ChatOptions.model()，想换推理模型只改这里
+        # 例如：deepseek-chat → deepseek-reasoner（深度思考模式）
+        model: deepseek-chat
+      qwen:
+        # 例如：qwen-plus → qwen-max（更强但更贵）
+        model: qwen-plus
     dashscope:
       api-key: ${DASHSCOPE_API_KEY}
       chat:
